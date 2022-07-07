@@ -60,16 +60,6 @@ ENVIRONMENT
 ---------------
 Special packages were installed in order to run queries for this project. Refer to requirements.txt or requirements_manual.txt files for instructions on how to install.
 
-- beautifulsoup4
-- spotipy
-- lyricsgenius
-- nltk
-- spacy
-- gensim
-- pyLDAvis
-- wordcloud
-
-
 HOUSEKEEPING NOTES
 ---------------
 - Make sure all files are within the same folder as the working Jupyter notebooks.
