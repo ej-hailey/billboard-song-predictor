@@ -1,0 +1,29 @@
+---- Instructions below if you wish to install the packages individually ----
+
+$ conda create -n capstone_hailey python=3.8 numpy pandas scipy jupyter jupyteb seaborn
+
+$ python -m pip install -U pip
+
+$ python -m pip install -U matplotlib
+
+$ conda install -c plotly plotly=5.9.0
+
+$ pip install -U scikit-learn
+
+$ pip install beautifulsoup4
+
+$ pip install spotipy
+
+$ pip install lyricsgenius
+
+$ pip install --user -U nltk
+
+$ pip install -U spacy
+
+$ python -m spacy download en_core_web_sm
+
+$ pip install gensim
+
+$ pip install pyLDAvis
+
+$ pip install wordcloud
