@@ -7,9 +7,9 @@ What is a song? On Merriam-Webster, it states that a song is merely a “short m
 
 > How can we analyze a song’s words and music such that we can predict the probability of its success?
     
-Before answering that question, we need define what success means first. In this project, we are using the Billboard Hot100 chart as a measurement of success. Since 1958, Billboard Hot100 has been the music industry’s standard record chart in the United States for the top 100 songs. The algorithm is based on physical and digital sales, radio play, and online streaming activity from platforms like Spotify, Apple Music, YouTube, Pandora, etc. 
+Before answering that question, "success" needs to be defined first. For this project, the Billboard Hot100 chart was used as a measurement of success. Since 1958, Billboard Hot100 has been the music industry’s standard record chart in the United States for the top 100 songs. The algorithm is currently based on physical and digital sales, radio play, and online streaming activity from platforms like Spotify, Apple Music, YouTube, Pandora, etc. 
 
-And while it may have once been easy for major label artists like Katy Perry, Chris Brown, and Jay-Z to make Billboard hits, data has shown that music is evolving. The streaming era is shaping the way we produce, distribute, and consume music. It presents an [opportunity](https://firston.soundcloud.com/) for new and emerging artists to showcase their music and make their “big break” through channels like TikTok, Soundcloud, or YouTube. In fact, Spotify’s SEC filings have shown that [major label market share](https://www.musicbusinessworldwide.com/slowly-but-surely-the-major-labels-dominance-of-spotify-is-declining/) have been steadily declining since 2017. 
+And while it may have once been easy for major label artists like Katy Perry, Chris Brown, and Jay-Z to make Billboard hits, data has shown that music is evolving. The streaming era is shaping the way music is produced, distributed, and consumed. It presents an [opportunity](https://firston.soundcloud.com/) for new and emerging artists to showcase their music and make their “big break” through channels like TikTok, Soundcloud, or YouTube. In fact, Spotify’s SEC filings have shown that [major label market share](https://www.musicbusinessworldwide.com/slowly-but-surely-the-major-labels-dominance-of-spotify-is-declining/) have been steadily declining since 2017. 
 
 #### BUSINESS VALUE:
 
@@ -17,25 +17,25 @@ Because of this recent and rapid change in music, companies are taking a reactiv
 
 EXPLORATORY DATA ANALYSIS & INSIGHTS
 ---------------
-Due to the large number of features and for interpretability purposes, I decided to model against two separate datasets: one for billboard/spotify data (we'll call this audio dataset) and another for song lyrics (we'll call this lyrics dataset). The models for both would be based on a binary classification problem where 0 represents songs that did not reach the Billboard chart and 1 represents songs that did reach the Billboard chart.
+Due to the large number of features and for interpretability purposes, modeling was done against two separate datasets: one for billboard/spotify data (called "audio dataset") and another for song lyrics (called "lyrics dataset"). Both datasets presented a binary classification problem where 0 represents songs that did not reach the Billboard chart and 1 represents songs that did reach the Billboard chart.
 
 #### AUDIO DATASET:
 
-There are two metrics to measure time - the year that the song was released (release_year) and the year that the song was listed on the Billboard (billboard_year). When looking at only class 1 (Billboard songs), release_year did not have a perfectly linear relationship with billboard_year.
+There were two metrics to measure time - the year that the song was released (release_year) and the year that the song was listed on the Billboard (billboard_year). When looking at only class 1 (Billboard), release_year did not have a perfectly linear relationship with billboard_year.
 
 ![bb_release_year](https://github.com/ej-hailey/billboard-song-predictor/blob/main/Misc%20Files/bbsongs_release_year_scatter.png)
 
-After zooming into the data points that fell below the trend line, I discovered that these were primarily holiday songs. Listeners like to reminisce on the good ol' classic Christmas music during the holidays. That led to a couple assumptions:
+After zooming into the data points that fell below the trend line, results whos that these were primarily holiday songs. Listeners liked to reminisce on the good ol' classic Christmas music during the holidays. That led to a couple assumptions:
 - While producing Christmas music in November/December may present itself as an opportunity, the competition is more saturated if the goal is to reach the Billboard chart.
 - Listeners are not necessarily always looking for something "new and exciting".
 
-In fact, when we look at the 2008 and 2009 Billboard charts, artists like Glee, Adam Lambert, and David Cook were top producers of Billboard songs. These artists mainly sang covers of older songs, many of which did not reach the Billboard when they were originally released!
+In fact, the 2008 and 2009 Billboard charts showed that artists like Glee, Adam Lambert, and David Cook produced many Billboard song hits. These artists mainly sang covers of older songs, many of which did not reach the Billboard when they were originally released!
 
 |Artists from 2008 Billboard Hot100 | Artists from 2009 Billboard Hot100 |
 |-|-|
 ![bbartists_2008](https://github.com/ej-hailey/billboard-song-predictor/blob/main/Misc%20Files/bbartists_2008.png) | ![bbartists_2009](https://github.com/ej-hailey/billboard-song-predictor/blob/main/Misc%20Files/bbartists_2009.png)
 
-Moving along, the data web scraped from billboard.com had an important metric to analyze: weeks on chart. By visualizing this as a box plot, we can see the downward trend of the Median while more and more longer weeks on the chart became outliers.
+Moving along, the data web scraped from billboard.com had an important metric to analyze: weeks_on_chart. When visualized as a box plot, there was a downward trend of each median while more and more longer weeks on the chart became outliers.
 
 ![weeks_chart](https://github.com/ej-hailey/billboard-song-predictor/blob/main/Misc%20Files/billboard_boxplot.png)
 
@@ -45,13 +45,13 @@ See my [LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:6947
 
 #### LYRICS DATASET:
 
-The preprocessing and vectorization for song lyrics was a more challenging but fun part of this project. Because songs tend to be repetitive, I used the TF-IDF vectorizer from sklearn (as opposed to Bag of Words which would be biased towards high frequency tokens). Other transformations I addressed were: slang/colloquial words, vocalise, and song composition. The final product was used for a logistic regression model to interpret the positive and negative coefficients (see next section "MODELING")
+The preprocessing and vectorization for song lyrics was a more challenging but fun part of this project. Because songs tend to be repetitive, the TF-IDF vectorizer from sklearn was used (as opposed to Bag of Words which would be biased towards high-frequency tokens). Other transformations included slang/colloquial words, vocalise, and song composition. The final product was used for a logistic regression model to interpret the positive and negative coefficients (see next section "MODELING")
 
-Because the process above produced over 2,000 features, I created an LDA model which clusters words into topics. This time, I used the spaCy and gensim packages.
+Because the process above produced over 2,000 features (or unique words), an unsupervised algorithm called LDA model was run to cluster meaningful words into common topics. This time, spaCy and gensim packages were used instead of sklearn.
 
 ![lda_model](https://github.com/ej-hailey/billboard-song-predictor/blob/main/Misc%20Files/topic_trends.png)
 
-This chart shows us that:
+This chart indicated that:
 - Songs about romance and heartbreak were always popular, but they have become exponentially popular in later years.
 - On the other hand, hardcore music and songs about life are seeing a decline.
 - Explicit and Latin music have seen an uptick recently and this could be due to how music is becoming more inclusive and globalized.
@@ -63,19 +63,19 @@ MODELING
 
 #### AUDIO DATASET
 
-The Logistic Regression model performed fairly well with a 81.1% accuracy after fine-tuning with cross-validation through grid search. The top three positive coefficients were Track Popularity, Genre Screen, and Artist Popularity. The top three negative coefficients were Duration, Release Year, and Energy.
+The Logistic Regression model performed fairly well with a 81.1% accuracy after fine-tuning with cross-validation through grid search. The top three positive coefficients were track_popularity, genre_screen, and artist_popularity. The top three negative coefficients were duration, release_year, and energy.
 
 Refer to the [glossary](https://github.com/ej-hailey/billboard-song-predictor/blob/main/glossary.pdf) for feature definitions.
 
-One that is not recognizable right away is "genre screen". This was a new feature I created by clustering Spotify's many genre's. Genre Screen include songs that debuted "on screen" such as movie or Broadway show soundtracks or cover songs from talent shows (e.g. American Idol) or television series (e.g. Glee). This feature along with track and artist popularity have a positive influence in the likelihood of a song reaching Billboard Hot100. In hindsight, I realized that "track popularity" was possibly collinear with the target variable (billboard). This would be a feature I would consider dropping in future modeling.
+One that is not recognizable right away is "genre_screen". This was a new feature engineered by clustering Spotify's many genre's. It included songs that debuted "on screen" such as movie/Broadway Show soundtracks or cover songs from talent shows (e.g. American Idol) or television series (e.g. Glee). This feature along with track and artist popularity had a positive influence on the likelihood of a song reaching Billboard Hot100. However in hindsight, it was likely that "track_popularity" was collinear with the target variable (billboard) and thus should be dropped in future modeling.
 
-On the other hand, songs that were too long ("duration") or too loud/noisy ("energy") have a negative influence on the likelihood of a song reaching the Billboard chart. "Release year" is also a negative indicator, but we had seen through EDA that songs from the 1960's and 1980's are still being listened to.
+On the other hand, songs that were too long (duration) or too loud/noisy (energy) had a negative influence on the likelihood of a song reaching the Billboard chart. Release year was also a negative indicator, but this was already explained through EDA which discovered the 1960's and 1980's holiday music.
 
-I also used Random Forest which gave the best score of 87.6% accuracy after cross-validation. While this model can tell us which features were important, they could not tell us the direction of those features (i.e. positive or negative coefficients like the Logistic Regression model). Regardless, the top features by permutation importance were similar to the logistic regression model: track popularity, duration, artist followers, release year, artist popularity, and instrumentalness.
+Amongst all the classifiers, Random Forest gave the best model performance score of 87.6% accuracy. While this model can explain which features were important, it does not know the direction of those features (i.e. positive or negative coefficients like the Logistic Regression model). Regardless, the top features by permutation importance were similar to the Logistic Regression coefficients: track popularity, duration, artist followers, release year, artist popularity, and instrumentalness.
 
 #### LYRICS DATASET
 
-The Logistic Regression model scored an accuracy of 64.1%. When comparing the top positive and negative coefficients, there appears to be a noticeable difference between the two. Overall, the positive coefficients evoke a fun-spirited feel while the negative coefficients have a dark/gloomy context. It is also interesting to see that the choice of words make a big difference (e.g. dawg vs. dude)
+The Logistic Regression model scored an accuracy of 64.1%. When comparing the top positive and negative coefficients, there appeared to be a noticeable difference between the two. Overall, the positive coefficients evoked a fun-spirited feeling while the negative coefficients had a dark/gloomy context. It was also interesting to see that the choice of words made a big difference (e.g. dawg vs. dude)
 
 ![lda_model](https://github.com/ej-hailey/billboard-song-predictor/blob/main/Misc%20Files/lyrics_pos_coef.png)
 ![lda_model](https://github.com/ej-hailey/billboard-song-predictor/blob/main/Misc%20Files/lyrics_neg_coef.png)
